@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
 			system("color 70");
 			cout.setf(ios::left);
 			gotoxy(5, 1);
-			cout << "Ïîëíûé ïóòü: ";
+			cout << "ÃÃ®Ã«Ã­Ã»Ã© Ã¯Ã³Ã²Ã¼: ";
 			SetColor(15, 1);
 			cout << setw(100) << _Path.make_preferred().generic_string() << endl;
 
@@ -62,25 +62,5 @@ int main(int argc, char* argv[]) {
 			vecContent.clear();
 		}
 		
-		/*char ch = '*';
-		vector<string> vecStrContent(NULL);
-		WIN32_FIND_DATA FindFileData;
-		HANDLE hf;
-		strPath += ch;
-		LPCSTR lpstrPatch = strPath.c_str();
-		hf = FindFirstFile(lpstrPatch, &FindFileData);
-		int i{ 0 };
-		if (hf != INVALID_HANDLE_VALUE) {
-			do {
-				vecStrContent.push_back(FindFileData.cFileName);
-				gotoxy(5, i + 4);
-				cout << setw(50) << vecStrContent[i] << "\n";
-				i++;
-			} while (FindNextFile(hf, &FindFileData) != 0);
-			FindClose(hf);
-		}
-		_getch();
-		*/
-	
 	return 0;
 }
