@@ -13,16 +13,6 @@ void KeyPress(std::vector<std::filesystem::path> content, std::filesystem::path 
 	int position{ 1 };
 	while (position != (content.size() + 1) && position >= 1) {
 		int key = _getch();
-		for (int i = 0; i < content.size(); i++) {
-			if (i == position) {
-				SetColor(0, 3);
-				cout << content[i] << endl;
-			}
-			else {
-				SetColor(0, 7);
-				cout << content[i] << endl;
-			}
-		}
 		if (position <= content.size() && position >= 1) {
 			if (key == 72) {
 				if (position > 1)
@@ -40,7 +30,7 @@ void KeyPress(std::vector<std::filesystem::path> content, std::filesystem::path 
 					return;
 				}
 				else {
-					Path = content[position - 1].filename();
+					Path = content[position - 1];
 					return;
 				}
 			}
