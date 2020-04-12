@@ -12,22 +12,18 @@
 
 #include "Color.h"
 #include "HardDisk.h"
+#include "KeyPress.h"
 
 using namespace std::filesystem;
 using namespace std;
 
+void KeyPress(vector<path> content, path &Path);
+
 int main(int argc, char* argv[]) {
 		setlocale(LC_ALL, "RUS");
-		//system("mode con cols=100 lines=80");
-		//system("color 70");
 		cout.setf(ios::left);
 		
-		//path pathHard = HardDisk();
-		//cout << pathHard;
 		SetColor(7, 0);
-		/*HWND window_header = GetConsoleWindow();
-		SetWindowPos(window_header, HWND_TOPMOST, 100, 50, 1000, 800, NULL);
-		*/
 
 		path _Path("e:/");
 		_Path.preferred_separator;
@@ -36,31 +32,28 @@ int main(int argc, char* argv[]) {
 		while (1) {
 			system("cls");
 			vector<path> vecContent(NULL);
+			vecContent.push_back("...");
 			
 			num = 0;
 			system("color 70");
 			cout.setf(ios::left);
 			gotoxy(5, 1);
-			cout << "ÃÃ®Ã«Ã­Ã»Ã© Ã¯Ã³Ã²Ã¼: ";
-			SetColor(15, 1);
+			cout << "Ïîëíûé ïóòü: ";
 			cout << setw(100) << _Path.make_preferred().generic_string() << endl;
 
-			i = 0;
+			i = 0; 
+			gotoxy(5, i + 3);
+			cout << "1 . \"...\"" << endl;
 			for (auto& p : directory_iterator(_Path)) {
 				gotoxy(5, i + 4);
-				std::cout << setw(2) << i + 1 << ". " << setw(80) << p.path().filename() << '\n';
+				cout << setw(2) << i + 2 << ". " << setw(80) << p.path().filename() << endl;
 				vecContent.push_back(p.path());
 				i++;
 			}
-			cin >> num;
-			if (num > 0) {
-				_Path = vecContent[num - 1];
-			}
-			else {
-				_Path = _Path.parent_path();
-			}
+			KeyPress(vecContent, _Path);
+			system("cls");
 			vecContent.clear();
 		}
-		
+
 	return 0;
 }
