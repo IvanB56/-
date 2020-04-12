@@ -17,12 +17,19 @@
 using namespace std::filesystem;
 using namespace std;
 
-void KeyPress(vector<path> content, path &Path);
+void clearConsole(); 
 
 int main(int argc, char* argv[]) {
-		setlocale(LC_ALL, "RUS");
+
+
+	setlocale(LC_ALL, "RUS");
+
+	HWND hwnd = GetConsoleWindow();
+	SetWindowText(hwnd, "Ôאיכמגûי לוםוהזונ");
+	SetWindowPos(hwnd, HWND_TOP, 100, 200, 1000, 500, SWP_NOCOPYBITS);
+	ShowWindow(hwnd, SW_SHOWNORMAL);
+
 		cout.setf(ios::left);
-		
 		SetColor(7, 0);
 
 		path _Path("e:/");
@@ -30,7 +37,7 @@ int main(int argc, char* argv[]) {
 
 		int num, i;
 		while (1) {
-			system("cls");
+			clearConsole();
 			vector<path> vecContent(NULL);
 			vecContent.push_back("...");
 			
@@ -43,17 +50,30 @@ int main(int argc, char* argv[]) {
 
 			i = 0; 
 			gotoxy(5, i + 3);
-			cout << "1 . \"...\"" << endl;
 			for (auto& p : directory_iterator(_Path)) {
-				gotoxy(5, i + 4);
-				cout << setw(2) << i + 2 << ". " << setw(80) << p.path().filename() << endl;
 				vecContent.push_back(p.path());
-				i++;
 			}
 			KeyPress(vecContent, _Path);
-			system("cls");
+			
 			vecContent.clear();
 		}
 
 	return 0;
+}
+
+void clearConsole() {
+	COORD topLeft = { 0, 0 };
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO screen;
+	DWORD written;
+
+	GetConsoleScreenBufferInfo(console, &screen);
+	FillConsoleOutputCharacterA(
+		console, ' ', screen.dwSize.X * screen.dwSize.Y, topLeft, &written
+	);
+	FillConsoleOutputAttribute(
+		console, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE,
+		screen.dwSize.X * screen.dwSize.Y, topLeft, &written
+	);
+	SetConsoleCursorPosition(console, topLeft);
 }
