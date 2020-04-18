@@ -12,75 +12,68 @@
 
 #include "Color.h"
 #include "HardDisk.h"
+#include "KeyPress.h"
 
 using namespace std::filesystem;
 using namespace std;
 
+void clearConsole(); 
+
 int main(int argc, char* argv[]) {
-		setlocale(LC_ALL, "RUS");
-		//system("mode con cols=100 lines=80");
-		//system("color 70");
+
+
+	setlocale(LC_ALL, "RUS");
+
+	HWND hwnd = GetConsoleWindow();
+	SetWindowText(hwnd, "Файловый менеджер");
+	SetWindowPos(hwnd, HWND_TOP, 100, 200, 1000, 500, SWP_NOCOPYBITS);
+	ShowWindow(hwnd, SW_SHOWNORMAL);
+
 		cout.setf(ios::left);
-		
-		//path pathHard = HardDisk();
-		//cout << pathHard;
 		SetColor(7, 0);
-		/*HWND window_header = GetConsoleWindow();
-		SetWindowPos(window_header, HWND_TOPMOST, 100, 50, 1000, 800, NULL);
-		*/
 
 		path _Path("e:/");
 		_Path.preferred_separator;
 
 		int num, i;
 		while (1) {
-			system("cls");
+			clearConsole();
 			vector<path> vecContent(NULL);
+			vecContent.push_back("...");
 			
 			num = 0;
 			system("color 70");
 			cout.setf(ios::left);
 			gotoxy(5, 1);
 			cout << "Полный путь: ";
-			SetColor(15, 1);
 			cout << setw(100) << _Path.make_preferred().generic_string() << endl;
 
-			i = 0;
+			i = 0; 
+			gotoxy(5, i + 3);
 			for (auto& p : directory_iterator(_Path)) {
-				gotoxy(5, i + 4);
-				std::cout << setw(2) << i + 1 << ". " << setw(80) << p.path().filename() << '\n';
 				vecContent.push_back(p.path());
-				i++;
 			}
-			cin >> num;
-			if (num > 0) {
-				_Path = vecContent[num - 1];
-			}
-			else {
-				_Path = _Path.parent_path();
-			}
+			KeyPress(vecContent, _Path);
+			
 			vecContent.clear();
 		}
-		
-		/*char ch = '*';
-		vector<string> vecStrContent(NULL);
-		WIN32_FIND_DATA FindFileData;
-		HANDLE hf;
-		strPath += ch;
-		LPCSTR lpstrPatch = strPath.c_str();
-		hf = FindFirstFile(lpstrPatch, &FindFileData);
-		int i{ 0 };
-		if (hf != INVALID_HANDLE_VALUE) {
-			do {
-				vecStrContent.push_back(FindFileData.cFileName);
-				gotoxy(5, i + 4);
-				cout << setw(50) << vecStrContent[i] << "\n";
-				i++;
-			} while (FindNextFile(hf, &FindFileData) != 0);
-			FindClose(hf);
-		}
-		_getch();
-		*/
-	
+
 	return 0;
+}
+
+void clearConsole() {
+	COORD topLeft = { 0, 0 };
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO screen;
+	DWORD written;
+
+	GetConsoleScreenBufferInfo(console, &screen);
+	FillConsoleOutputCharacterA(
+		console, ' ', screen.dwSize.X * screen.dwSize.Y, topLeft, &written
+	);
+	FillConsoleOutputAttribute(
+		console, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE,
+		screen.dwSize.X * screen.dwSize.Y, topLeft, &written
+	);
+	SetConsoleCursorPosition(console, topLeft);
 }

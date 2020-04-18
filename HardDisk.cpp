@@ -1,8 +1,6 @@
 #include <windows.h>
 #include <stdio.h>
-#include <vector>
 #include "HardDisk.h"
-#include <string>
 
 void DisplayVolumePaths(__in PWCHAR VolumeName)
 {
@@ -54,7 +52,7 @@ void DisplayVolumePaths(__in PWCHAR VolumeName)
 
 	return;
 }
-WCHAR* HardDisk()
+void HardDisk()
 {
 	DWORD  CharCount = 0;
 	WCHAR  DeviceName[MAX_PATH] = L"";
@@ -71,7 +69,7 @@ WCHAR* HardDisk()
 	{
 		Error = GetLastError();
 		wprintf(L"FindFirstVolumeW failed with error code %d\n", Error);
-		return 0;
+		return;
 	}
 
 	for (;;)
@@ -102,7 +100,7 @@ WCHAR* HardDisk()
 			break;
 		}
 
-		//DisplayVolumePaths(VolumeName);
+		DisplayVolumePaths(VolumeName);
 
 		Success = FindNextVolumeW(FindHandle, VolumeName, ARRAYSIZE(VolumeName));
 
@@ -124,5 +122,5 @@ WCHAR* HardDisk()
 	FindVolumeClose(FindHandle);
 	FindHandle = INVALID_HANDLE_VALUE;
 
-	return VolumeName;
+	return;
 }
