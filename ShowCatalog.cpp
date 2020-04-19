@@ -63,7 +63,6 @@ void ShowCatalog(std::vector<std::filesystem::path> &content, std::filesystem::p
 				if (content.size() >= 23) {
 					beg = end;
 					end += 23;
-					position += 23;
 				}
 				return;
 			}
