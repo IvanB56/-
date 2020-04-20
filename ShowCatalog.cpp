@@ -61,9 +61,15 @@ void ShowCatalog(std::vector<std::filesystem::path> &content, std::filesystem::p
 			}
 			else if (key == 81) {
 				if (content.size() >= 23) {
-					beg = end;
-					end += 23;
-					position += 23;
+					if (end != content.size()) {
+						beg = end;
+						end += 23;
+					}
+					if (end >= content.size()) {
+						end = content.size();
+						return;
+					}
+				
 				}
 				return;
 			}
