@@ -11,7 +11,7 @@
 #include "Navigation.h"
 #include "OperationWithCatalog.h"
 
-//вывод на экран список каталогов/файлов и работа с ними
+//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ
 void ShowCatalog(std::vector<std::filesystem::path> &content, std::filesystem::path &Path, 
 				unsigned short &beg, unsigned short &end) 
 {
