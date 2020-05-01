@@ -10,15 +10,12 @@
 //работа с каталогами и файлами(создание, удаление)
 
 void CreatNewFile(std::filesystem::path Path) {
-	std::string nameFIle;
+	std::string nameFile;
 	gotoxy(5, 3);
 	std::cout << "Enter the name of the new file: ";
-	std::cin >> nameFIle;
-	Path /= nameFIle;
-	std::fstream newFile(Path);
-	/*if (newFile.is_open()) {
-		std::cout << "File exist!";
-	}*/
+	std::cin >> nameFile;
+	Path /= nameFile;
+	std::ofstream newFile(Path);
 	newFile.close();
 }
 
