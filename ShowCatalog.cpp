@@ -8,33 +8,38 @@
 
 #include "ShowCatalog.h"
 #include "Color.h"
+#include "Navigation.h"
+#include "OperationWithCatalog.h"
 
+//вывод на экран список каталогов/файлов и работа с ними
 void ShowCatalog(std::vector<std::filesystem::path> &content, std::filesystem::path &Path, 
-				unsigned short &beg, unsigned short &end)
+				unsigned short &beg, unsigned short &end) 
 {
 	int position = beg + 1;
-	
-	while (position <= end && position >= beg + 1)
-	{
-		for (int i = beg; i < end; i++)
-		{
-			gotoxy(5, i + 4 - beg);
-			if (i == (position - 1)) {
-				SetColor(0, 3);
-				std::cout << std::setw(2) << i + 1 << ". " << std::setw(80) << 
-					content[i].filename().generic_string() << std::endl;
-			}
-			else {
-				SetColor(0, 7);
-				std::cout << std::setw(2) << i + 1 << ". " << std::setw(80) << 
-					content[i].filename().generic_string() << std::endl;
-			}
-		}
-
+	if (end == 0) {
 		char key = _getch();
-		if (key == 224)
+		if (key == 224) {
 			key = _getch();
-
+		}
+		if (key == 8) {
+			Path = Path.parent_path();
+			return;
+		}
+		if (key == 61) {
+			CreatNewCatalog(Path);
+			return;
+		}
+		if (key == 62) {
+			CreatNewFile(Path);
+			return;
+		}
+	}
+	while (position <= end && position >= beg + 1) {
+		Navigation(content, beg, end, position);
+		char key = _getch();
+		if (key == 224) {
+			key = _getch();
+		}
 		if (position <= content.size() && position >= 1) {
 			if (key == 72) {
 				if (position > 0)
@@ -47,9 +52,9 @@ void ShowCatalog(std::vector<std::filesystem::path> &content, std::filesystem::p
 				else if (position > content.size()) position = (content.size() - 1);
 			}
 			else if (key == 13) {
-					Path = content[position - 1];
-					beg = 0;
-					return;
+				Path = content[position - 1];
+				beg = 0;
+				return;
 			}
 			else if (key == 8) {
 				Path = Path.parent_path();
@@ -69,19 +74,30 @@ void ShowCatalog(std::vector<std::filesystem::path> &content, std::filesystem::p
 						end = content.size();
 						return;
 					}
-				
 				}
 				return;
 			}
 			else if (key == 73) {
 				if (content.size() >= 23 && beg >= 0) {
-					end = beg;
-					beg -= 23;
+					if (beg != 0) {
+						end = beg;
+						beg -= 23;
+					}
+					else if (beg < 0) {
+						beg = 0;
+					}
 				}
 				return;
-			}
-			else if (key == 27) exit(0);
+			} else if (key == 61){
+				CreatNewCatalog(Path);
+				return;
+			} else if (key == 83) {
+				deleteCatalog(content[position - 1]);
+				return;
+			} else if (key == 62) {
+				CreatNewFile(Path);
+				return;
+			} else if (key == 27) exit(0);
 		}
-	}
-	
+	}	
 }
