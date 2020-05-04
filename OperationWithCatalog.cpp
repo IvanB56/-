@@ -2,7 +2,9 @@
 #include <filesystem>
 #include <windows.h>
 #include <direct.h>
+#include <string>
 #include <fstream>
+#include <conio.h>
 
 #include "OperationWithCatalog.h"
 #include "Color.h"
@@ -13,17 +15,23 @@ void CreatNewFile(std::filesystem::path Path) {
 	std::string nameFile;
 	gotoxy(5, 3);
 	std::cout << "Enter the name of the new file: ";
-	std::cin >> nameFile;
+	std::getline(std::cin, nameFile);
+	if (nameFile.empty()) {
+		return;
+	}
 	Path /= nameFile;
 	std::ofstream newFile(Path);
 	newFile.close();
 }
 
 void CreatNewCatalog(std::filesystem::path Path) {
-	char nameCatalog[MAX_PATH];
+	std::string nameCatalog;
 	gotoxy(5, 3);
 	std::cout << "Enter new name: ";
-	std::cin >> nameCatalog;
+	std::getline(std::cin, nameCatalog);
+	if (nameCatalog.empty()) {
+		return;
+	}
 	Path /= nameCatalog;
 	std::filesystem::create_directories(Path);
 }
