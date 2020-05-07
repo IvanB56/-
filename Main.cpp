@@ -21,7 +21,6 @@ int main(int argc, char* argv[])
 	HWND hwnd = GetConsoleWindow();
 	std::filesystem::path _Path;
 	std::vector<std::filesystem::path> disk(NULL);
-	int num, i;
 
 	SetWindowText(hwnd, "Файловый менеджер");
 	SetWindowPos(hwnd, HWND_TOP, 100, 200, 800, 550, SWP_NOCOPYBITS | SWP_NOREPOSITION | SWP_NOMOVE);
@@ -40,17 +39,18 @@ int main(int argc, char* argv[])
 	while (1) {
 		clearConsole();
 		std::vector<std::filesystem::path> vecContent(NULL);
-		num = 0;
+
 		system("color 70");
 		std::cout.setf(std::ios::left);
 		gotoxy(5, 1);
+
 		std::cout << "Полный путь: ";
 		std::cout << std::setw(100) << _Path.generic_string() << std::endl;
 		if (_Path.empty()) {
 			ShowDisk(disk, _Path);
 		}
-		i = 0;
-		gotoxy(5, i + 3);
+
+		gotoxy(5, 3);
 		for (auto& p : std::filesystem::directory_iterator(_Path)) {
 			vecContent.push_back(p.path());
 		}
